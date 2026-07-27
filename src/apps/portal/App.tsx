@@ -57,7 +57,7 @@ export default function App() {
   const [transactionDate, setTransactionDate] = useState<Date | null>(null);
   const [items, setItems] = useState<Array<{ label: string; qty: number }>>([]);
   const [totalItems, setTotalItems] = useState(0);
-  const [disclaimer, setDisclaimer] = useState("");
+  const [notes, setNotes] = useState("");
 
   const [errorTitle, setErrorTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -123,7 +123,7 @@ export default function App() {
         setTransactionDate(txDate);
         setItems(dynamicItems);
         setTotalItems(tx.totalItemCount);
-        setDisclaimer(tx.notes || result.settings.outletFooter || "");
+        setNotes(tx.notes || "");
         setView("result");
       } else {
         setErrorTitle("Data Tidak Ditemukan");
@@ -154,14 +154,6 @@ export default function App() {
 
   function handleBack() {
     setView("search");
-  }
-
-  function handleSaveImage() {
-    alert("Fitur Simpan Gambar akan tersedia.");
-  }
-
-  function handleShare() {
-    alert("Fitur Bagikan akan tersedia.");
   }
 
   if (initError) {
@@ -203,9 +195,7 @@ export default function App() {
           transactionDate={transactionDate}
           items={items}
           totalItems={totalItems}
-          disclaimer={disclaimer}
-          onSaveImage={handleSaveImage}
-          onShare={handleShare}
+          notes={notes}
           onBack={handleBack}
         />
       )}
