@@ -1,0 +1,18 @@
+{
+  "name": "Laundry Checklist",
+  "short_name": "LaundryApp",
+  "description": "Rekap item laundry untuk petugas",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "orientation": "portrait",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

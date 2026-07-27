@@ -1,0 +1,3 @@
+User-Agent: *
+Allow: /
+Sitemap: https://app.laundrychecklist.app/sitemap.xml
