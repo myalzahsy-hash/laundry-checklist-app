@@ -14,10 +14,8 @@ import { Skeleton } from "@/ui/components/ui/skeleton";
 import { Card, CardContent } from "@/ui/components/ui/card";
 import { Package, X } from "lucide-react";
 
-function sortByDateDesc(a: TransactionDocument, b: TransactionDocument): number {
-  const dateCmp = b.transactionDate.localeCompare(a.transactionDate);
-  if (dateCmp !== 0) return dateCmp;
-  return b.receiptSequence - a.receiptSequence;
+function sortByCreatedAtDesc(a: TransactionDocument, b: TransactionDocument): number {
+  return b.createdAt.getTime() - a.createdAt.getTime();
 }
 
 export default function HistoryPage() {
@@ -58,7 +56,7 @@ export default function HistoryPage() {
         const matchesFilter = filterByDateRange(t.transactionDate, activeFilter, dateRange);
         return matchesSearch && matchesFilter;
       })
-      .sort(sortByDateDesc);
+      .sort(sortByCreatedAtDesc);
   }, [transactions, search, activeFilter, dateRange]);
 
   function handleFilterApply(filter: FilterType, range: { from: string; to: string }) {

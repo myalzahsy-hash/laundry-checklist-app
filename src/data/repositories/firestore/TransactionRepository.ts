@@ -72,7 +72,7 @@ export const TransactionRepository = {
   },
 
   async getAll(outletName: string): Promise<TransactionDocument[]> {
-    const q = query(transactionsCollection(outletName), orderBy("transactionDate", "desc"));
+    const q = query(transactionsCollection(outletName), orderBy("createdAt", "desc"));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(mapSnapshot);
   },

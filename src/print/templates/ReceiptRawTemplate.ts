@@ -1,4 +1,5 @@
 import type { ReceiptPrintModel } from "@/print/types/ReceiptPrintModel";
+import { APP_NAME } from "@/shared/constants";
 
 // Kapasitas fisik 1 baris kertas thermal 58mm (font normal ESC/POS, RONGTA).
 const PAPER_WIDTH = 32;
@@ -11,6 +12,12 @@ const INDENT = " ".repeat(MARGIN);
 // Lebar efektif saat font digandakan (nama pelanggan) — dihitung dari lebar
 // kertas penuh karena baris ini rata tengah (dipusatkan otomatis oleh printer).
 const DOUBLE_WIDTH = Math.floor(PAPER_WIDTH / 2);
+// Font B (kecil, dipakai catatan/footer) punya pitch karakter lebih ramping
+// dari Font A, jadi muat lebih banyak kolom di lebar fisik yang sama. Angka
+// umum untuk printer 58mm: Font A 32 kolom, Font B ~42 kolom. Sesuaikan kalau
+// hasil cetak Font B printer Anda ternyata beda dari ini.
+const SMALL_FONT_PAPER_WIDTH = 42;
+const SMALL_FONT_LINE_WIDTH = SMALL_FONT_PAPER_WIDTH - MARGIN * 2;
 
 const ESC = "\x1B";
 const GS = "\x1D";
@@ -49,13 +56,14 @@ function padLine(left: string, right: string | number, width = LINE_WIDTH): stri
 /** Baris rata kiri-kanan dengan leader titik-titik, mis. "  CD/Celana Dalam .... 2". */
 function padLineDots(left: string, right: string | number, width = LINE_WIDTH): string {
   const rightStr = String(right);
-  let sisa = width - left.length - rightStr.length;
+  // -2 untuk 1 spasi sebelum dan 1 spasi sesudah deretan titik-titik.
+  let sisa = width - left.length - rightStr.length - 2;
   if (sisa < 1) {
-    const maxLeft = Math.max(width - rightStr.length - 1, 1);
+    const maxLeft = Math.max(width - rightStr.length - 2 - 1, 1);
     left = left.slice(0, maxLeft);
-    sisa = width - left.length - rightStr.length;
+    sisa = width - left.length - rightStr.length - 2;
   }
-  return `${INDENT}${left}${".".repeat(sisa)}${rightStr}\n`;
+  return `${INDENT}${left} ${".".repeat(sisa)} ${rightStr}\n`;
 }
 
 /** Word-wrap sederhana untuk teks bebas (nama, notes, footer) ke lebar tertentu. */
@@ -93,10 +101,10 @@ export function generateReceiptCommands(model: ReceiptPrintModel): string[] {
 
   const commands: string[] = [CMD.INIT];
 
-  // Header: "LAUNDRY CHECKLIST" (tebal) + nama outlet (normal)
+  // Header: APP_NAME (tebal) + nama outlet (normal)
   commands.push(CMD.ALIGN_CENTER);
   commands.push(CMD.BOLD_ON);
-  commands.push("LAUNDRY CHECKLIST\n");
+  commands.push(`${APP_NAME.toUpperCase()}\n`);
   commands.push(CMD.BOLD_OFF);
   commands.push(`${model.outletName}\n`);
   commands.push("\n");
@@ -129,13 +137,13 @@ export function generateReceiptCommands(model: ReceiptPrintModel): string[] {
     commands.push(CMD.FONT_SMALL_ON);
     commands.push(CMD.ALIGN_LEFT);
     if (model.notes) {
-      wrapText(model.notes).forEach((l) => commands.push(`${INDENT}${l}\n`));
+      wrapText(model.notes, SMALL_FONT_LINE_WIDTH).forEach((l) => commands.push(`${INDENT}${l}\n`));
     }
     if (model.notes && model.footer) {
       commands.push("\n");
     }
     if (model.footer) {
-      wrapText(model.footer).forEach((l) => commands.push(`${INDENT}${l}\n`));
+      wrapText(model.footer, SMALL_FONT_LINE_WIDTH).forEach((l) => commands.push(`${INDENT}${l}\n`));
     }
     commands.push(CMD.FONT_SMALL_OFF);
   }

@@ -11,7 +11,7 @@ import { Label } from "@/ui/components/ui/label";
 import { Button } from "@/ui/components/ui/button";
 import { Save, Loader2 } from "lucide-react";
 import { useToast } from "@/shared/hooks/use-toast";
-import { MAX_OUTLET_NAME_LENGTH, MAX_NOTES_LENGTH } from "@/shared/constants";
+import { APP_NAME, MAX_OUTLET_NAME_LENGTH, MAX_NOTES_LENGTH } from "@/shared/constants";
 import { Platform } from "@/shared/lib/platform";
 import { PrinterSettingsSection } from "@/apps/pwa/features/desktop/components/PrinterSettingsSection";
 
@@ -137,7 +137,7 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-1 text-sm text-muted-foreground">
-            <p className="font-medium text-foreground">Laundry Checklist</p>
+            <p className="font-medium text-foreground">{APP_NAME}</p>
             <p>{Platform.isDesktop ? "Desktop Edition" : "Mobile Edition"}</p>
             <p>Version 1.0.0</p>
           </div>
