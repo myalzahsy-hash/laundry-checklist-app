@@ -89,7 +89,7 @@ export default function PrinterSettingsPage() {
           )}
 
           {!loading && status === "connected" && (
-            <div className="flex items-center gap-2 text-sm text-green-600">
+            <div className="flex items-center gap-2 text-sm text-success">
               <CheckCircle2 className="h-4 w-4" />
               QZ Tray terhubung
             </div>
@@ -153,7 +153,7 @@ export default function PrinterSettingsPage() {
       {!loading && selectedPrinter && (
         <Card>
           <CardContent className="flex items-center gap-2 py-4 text-sm">
-            <Wifi className="h-4 w-4 text-green-600" />
+            <Wifi className="h-4 w-4 text-success" />
             <span>
               Printer aktif: <strong>{selectedPrinter}</strong>
             </span>

@@ -68,7 +68,7 @@ export function PrinterSettingsSection() {
           )}
 
           {!loading && status === "connected" && (
-            <div className="flex items-center gap-2 text-sm text-green-600">
+            <div className="flex items-center gap-2 text-sm text-success">
               <CheckCircle2 className="h-4 w-4" />
               QZ Tray terhubung
             </div>
@@ -116,7 +116,7 @@ export function PrinterSettingsSection() {
         )}
 
         {!loading && selectedPrinter && (
-          <div className="flex items-center gap-2 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">
+          <div className="flex items-center gap-2 rounded-md bg-success/10 px-3 py-2 text-sm text-success">
             <Wifi className="h-4 w-4" />
             <span>
               Printer aktif: <strong>{selectedPrinter}</strong>
