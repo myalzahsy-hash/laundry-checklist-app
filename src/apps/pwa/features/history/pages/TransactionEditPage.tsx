@@ -12,6 +12,7 @@ import { TotalItemsDisplay } from "@/apps/pwa/features/cashier/components/TotalI
 import {
   transactionFormSchema,
   type TransactionFormData,
+  formatReceiptNumber,
 } from "@/shared/validation/transactionSchema";
 import { Button } from "@/ui/components/ui/button";
 import { Textarea } from "@/ui/components/ui/textarea";
@@ -90,8 +91,9 @@ export default function TransactionEditPage() {
     if (!id) return;
     setIsSubmitting(true);
     try {
+      const updatedReceiptNumber = formatReceiptNumber(data.transactionDate, data.receiptSequence);
       const result = await TransactionService.update(outletName, id, {
-        receiptNumber: transaction?.receiptNumber ?? "",
+        receiptNumber: updatedReceiptNumber,
         receiptSequence: data.receiptSequence,
         customerName: data.customerName,
         transactionDate: data.transactionDate,
